@@ -50,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String courseName = input.getText().toString();
-                        CourseMod newCourse = new CourseMod(courseName);
 
-                        courses.add(newCourse);
+                        // Use your DBHelper to add the course
+                        DBHelper dbHelper = new DBHelper(MainActivity.this);
+                        dbHelper.addCourse(courseName);
+
+                        // Refresh the RecyclerView with the updated courses
+                        ArrayList<CourseMod> courses = dbHelper.getAllCourses();
                         rvAdapter.setCourses(courses);
                     }
                 });
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
 
     }
 }
