@@ -133,5 +133,36 @@ public class DBHelper extends SQLiteOpenHelper {
         return courses;
     }
 
+    public ArrayList<SlideMod> getAllSlides(String courseName) {
+        ArrayList<SlideMod> slides = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            cursor = db.rawQuery("SELECT s.* FROM Slides s INNER JOIN CourseSlides cs ON s.SlideID = cs.SlideID INNER JOIN Courses c ON cs.CourseID = c.CourseID WHERE c.CourseName = ?", new String[]{courseName});
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    long slideID = cursor.getLong(cursor.getColumnIndex("SlideID"));
+                    String slideName = cursor.getString(cursor.getColumnIndex("SlideName"));
+                    String slideType = cursor.getString(cursor.getColumnIndex("SlideType"));
+                    String slidePath = cursor.getString(cursor.getColumnIndex("SlidePath"));
+
+                    // Create a SlideMod object and add it to the slides list
+                    SlideMod slide = new SlideMod(slideName, slidePath, slideType);
+                    slides.add(slide);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            // Handle exceptions or errors here
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return slides;
+    }
 
 }

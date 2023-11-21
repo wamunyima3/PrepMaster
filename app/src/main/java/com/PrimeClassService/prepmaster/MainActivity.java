@@ -16,7 +16,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvCourses;
     private FloatingActionButton addCourse;
-    private RVAdapter rvAdapter;
+    private RVCousersAdapter rvAdapter;
+    private DBHelper dbHelper;
+    private ArrayList<CourseMod> courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
         rvCourses = findViewById(R.id.rvCourses);
         addCourse = findViewById(R.id.fabAddCourse);
-        rvAdapter = new RVAdapter(this);
+        rvAdapter = new RVCousersAdapter(this);
 
-        ArrayList<CourseMod> courses = new ArrayList<>();
+        courses = new ArrayList<>();
 
         // Set the GridLayoutManager to the RecyclerView
         rvCourses.setLayoutManager(new GridLayoutManager(this,2));
         rvCourses.setAdapter(rvAdapter);
+
+        dbHelper = new DBHelper(MainActivity.this);
+        courses = dbHelper.getAllCourses();
+        rvAdapter.setCourses(courses);
 
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
                         String courseName = input.getText().toString();
 
                         // Use your DBHelper to add the course
-                        DBHelper dbHelper = new DBHelper(MainActivity.this);
                         dbHelper.addCourse(courseName);
 
                         // Refresh the RecyclerView with the updated courses
-                        ArrayList<CourseMod> courses = dbHelper.getAllCourses();
+                        courses = dbHelper.getAllCourses();
                         rvAdapter.setCourses(courses);
                     }
                 });
