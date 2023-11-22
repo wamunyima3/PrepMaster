@@ -1,6 +1,7 @@
 package com.PrimeClassService.prepmaster;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,13 @@ public class RVSlideAdapter extends RecyclerView.Adapter<RVSlideAdapter.ViewHold
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Get the clicked course name
-                    String clickedCourseName = slides.get(position).getSlideName();
-                    Toast.makeText(context,clickedCourseName,Toast.LENGTH_LONG).show();
+                    // Get the clicked slide's file path
+                    String filePath = slides.get(position).getSlidePath();
+
+                    // Open ReadingActivity with the file path
+                    Intent intent = new Intent(context, Reading.class);
+                    intent.putExtra("filePath", filePath);
+                    context.startActivity(intent);
                 }
             });
         }
