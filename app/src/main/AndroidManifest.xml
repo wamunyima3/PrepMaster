@@ -13,11 +13,13 @@
         android:theme="@style/Theme.PrepMaster"
         tools:targetApi="31">
         <activity
-            android:name=".Reading"
-            android:exported="false" />
-        <activity
             android:name=".Slide"
             android:exported="false" />
+
+        <activity
+            android:name="com.pspdfkit.ui.PdfActivity"
+            android:windowSoftInputMode="adjustNothing" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

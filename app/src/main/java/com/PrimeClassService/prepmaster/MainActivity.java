@@ -10,6 +10,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private RVCousersAdapter rvAdapter;
     private DBHelper dbHelper;
     private ArrayList<CourseMod> courses;
+    private TextView tvAddCourses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvCourses = findViewById(R.id.rvCourses);
         addCourse = findViewById(R.id.fabAddCourse);
+        tvAddCourses = findViewById(R.id.tvAddCourses);
         rvAdapter = new RVCousersAdapter(this);
 
         courses = new ArrayList<>();
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(MainActivity.this);
         courses = dbHelper.getAllCourses();
+        if(courses.size()>0){
+            tvAddCourses.setVisibility(View.GONE);
+        }else{
+            tvAddCourses.setVisibility(View.VISIBLE);
+        }
         rvAdapter.setCourses(courses);
 
         addCourse.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
                         // Refresh the RecyclerView with the updated courses
                         courses = dbHelper.getAllCourses();
+                        if(courses.size()>0){
+                            tvAddCourses.setVisibility(View.GONE);
+                        }else{
+                            tvAddCourses.setVisibility(View.VISIBLE);
+                        }
                         rvAdapter.setCourses(courses);
                     }
                 });

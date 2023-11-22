@@ -2,6 +2,7 @@ package com.PrimeClassService.prepmaster;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pspdfkit.configuration.activity.PdfActivityConfiguration;
+import com.pspdfkit.ui.PdfActivity;
 
 import java.util.ArrayList;
 
@@ -42,9 +46,13 @@ public class RVSlideAdapter extends RecyclerView.Adapter<RVSlideAdapter.ViewHold
                     String filePath = slides.get(position).getSlidePath();
 
                     // Open ReadingActivity with the file path
-                    Intent intent = new Intent(context, Reading.class);
-                    intent.putExtra("filePath", filePath);
-                    context.startActivity(intent);
+//                    Intent intent = new Intent(context, Reading.class);
+//                    intent.putExtra("filePath", filePath);
+//                    context.startActivity(intent);
+
+                    final Uri uri = Uri.parse(filePath);
+                    final PdfActivityConfiguration config = new PdfActivityConfiguration.Builder(context).build();
+                    PdfActivity.showDocument(context, uri, config);
                 }
             });
         }
